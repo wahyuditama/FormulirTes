@@ -60,9 +60,8 @@ $queryJurusan = mysqli_query($koneksi, "SELECT * FROM jurusan ORDER BY id DESC")
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Login admin</a>
+                        <a class="nav-link active" aria-current="page" href="admin/content/login.php">Login admin</a>
                     </li>
-
                 </ul>
 
             </div>

@@ -78,10 +78,10 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="auth-login-basic.html">
+                        <form class="dropdown-item" action="../logout.php" method="post">
                             <i class="bx bx-power-off me-2"></i>
-                            <span class="align-middle">Log Out</span>
-                        </a>
+                            <button type="submit" name="logout" class="align-middle">Log Out</button>
+                        </form>
                     </li>
                 </ul>
             </li>
