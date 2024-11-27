@@ -1,5 +1,6 @@
 <?php
 include '../database/koneksi.php';
+session_start();
 
 if (isset($_POST['tambah'])) {
     $jurusan = $_POST['jurusan'];

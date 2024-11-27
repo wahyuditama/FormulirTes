@@ -100,67 +100,91 @@
                 </ul>
             </li>
 
-            <li class="menu-header small text-uppercase">
-                <span class="menu-header-text">Master Data</span>
-            </li>
-            <li class="menu-item">
-                <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                    <div data-i18n="Account Settings">Pages</div>
-                </a>
-                <ul class="menu-sub">
-                    <li class="menu-item">
-                        <a href="tambah-gelombang.php" class="menu-link">
-                            <div data-i18n="Account">Tambah Gelombang</div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="tambah-jurusan.php" class="menu-link">
-                            <div data-i18n="Connections">Tambah Jurusan</div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="tambah-level.php" class="menu-link">
-                            <div data-i18n="Notifications">Tambah Level</div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="gelombang.php" class="menu-link">
-                            <div data-i18n="Notifications">gelombang</div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="jurusan.php" class="menu-link">
-                            <div data-i18n="Notifications">Jurusan</div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="tambah-user.php" class="menu-link">
-                            <div data-i18n="Notifications">tambah-pengguna</div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="tambah-data-peserta.php" class="menu-link">
-                            <div data-i18n="Notifications">Tambah Data Peserta</div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="data-peserta.php" class="menu-link">
-                            <div data-i18n="Notifications">Data Peserta</div>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
+            <?php if ($_SESSION['level'] == 1): ?>
+                <li class="menu-header small text-uppercase">
+                    <span class="menu-header-text">Master Data</span>
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                        <div data-i18n="Account Settings">Pages</div>
+                    </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item">
+                            <a href="tambah-gelombang.php" class="menu-link">
+                                <div data-i18n="Account">Tambah Gelombang</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="tambah-jurusan.php" class="menu-link">
+                                <div data-i18n="Connections">Tambah Jurusan</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="tambah-level.php" class="menu-link">
+                                <div data-i18n="Notifications">Tambah Level</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="gelombang.php" class="menu-link">
+                                <div data-i18n="Notifications">gelombang</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="jurusan.php" class="menu-link">
+                                <div data-i18n="Notifications">Jurusan</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="tambah-user.php" class="menu-link">
+                                <div data-i18n="Notifications">tambah-pengguna</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="tambah-data-peserta.php" class="menu-link">
+                                <div data-i18n="Notifications">Tambah Data Peserta</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="data-peserta.php" class="menu-link">
+                                <div data-i18n="Notifications">Data Peserta</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            <?php endif ?>
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
             <!-- Cards -->
-            <li class="menu-item">
-                <a href="cards-basic.html" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-collection"></i>
-                    <div data-i18n="Basic">Cards</div>
-                </a>
-            </li>
+
+            <?php if ($_SESSION['level'] == 2): ?>
+                <li class="menu-header small text-uppercase">
+                    <span class="menu-header-text">Master Data</span>
+                </li>
+                <li class="menu-item">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                        <div data-i18n="Account Settings">PIC</div>
+                    </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item">
+                            <a href="tambah-gelombang.php" class="menu-link">
+                                <div data-i18n="Account">Tambah Gelombang</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="tambah-jurusan.php" class="menu-link">
+                                <div data-i18n="Connections">Tambah Jurusan</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="data-peserta.php" class="menu-link">
+                                <div data-i18n="Notifications">Data Peserta</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            <?php endif ?>
             <!-- User interface -->
             <!-- <li class="menu-item">
                 <a href="javascript:void(0)" class="menu-link menu-toggle">

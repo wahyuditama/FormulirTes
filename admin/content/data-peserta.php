@@ -1,8 +1,18 @@
 <?php
 
 include '../database/koneksi.php';
+include '../layout/helper.php';
+session_start();
 
 $dataPeserta = mysqli_query($koneksi, "SELECT * FROM peserta_pelatihan ORDER BY id DESC");
+
+// Parameter untuk ubah status
+$id = isset($_GET['id']) ? $_GET['id'] : '';
+$status = isset($_GET['status']) ? $_GET['status'] : '';
+
+if (isset($id) || isset($status)) {
+    $query = mysqli_query($koneksi, "UPDATE peserta_pelatihan SET status = '$status' WHERE id = '$id'");
+}
 
 // untuk mendelete data
 if (isset($_GET['delete'])) {
@@ -72,6 +82,7 @@ if (isset($_GET['delete'])) {
                                                 <th>Nama Peserta</th>
                                                 <th>Email</th>
                                                 <th>Foto Kartu Keluarga</th>
+                                                <th>Status</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -89,17 +100,33 @@ if (isset($_GET['delete'])) {
                                                         <img src="../upload/<?php echo $rowPeserta['kartu_keluarga'] ?>" class="img-fluid" width="100" alt="">
                                                     </td>
                                                     <td>
-                                                        <a href="tambah-data-peserta.php?detail=<?php echo $rowPeserta['id'] ?>" class="btn btn-primary btn-sm">
-                                                            <span class="tf-icon bx bx-show bx-18px "></span>
-                                                        </a>
-                                                        <a href="tambah-data-peserta.php?edit=<?php echo $rowPeserta['id'] ?>" class="btn btn-success btn-sm">
-                                                            <span class="tf-icon bx bx-pencil bx-18px "></span>
-                                                        </a>
-                                                        <a onclick="return confirm('Apakah anda yakin akan menghapus data ini??')"
-                                                            href="data-peserta.php?delete=<?php echo $rowPeserta['id'] ?>" class="btn btn-danger btn-sm">
-                                                            <span class="tf-icon bx bx-trash bx-18px "></span>
-                                                        </a>
-
+                                                        <?php
+                                                        switch ($rowPeserta['status']) {
+                                                            case '1':
+                                                                $badge = "<a href='data-peserta.php?id=" . $rowPeserta['id'] . "&status=0' class='btn btn-success btn-sm'>Lulus</a>";
+                                                                break;
+                                                            default:
+                                                                $badge = "<a href='data-peserta.php?id=" . $rowPeserta['id'] . "&status=1' class='btn btn-danger btn-sm'>Belum Lulus</a>";
+                                                                break;
+                                                        }
+                                                        echo $badge;
+                                                        ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php if ($_SESSION['level'] == 2) : ?>
+                                                            <a href="tambah-data-peserta.php?detail=<?php echo $rowPeserta['id'] ?>" class="btn btn-primary btn-sm">
+                                                                <span class="tf-icon bx bx-show bx-18px "></span>
+                                                            </a>
+                                                        <?php endif ?>
+                                                        <?php if ($_SESSION['level'] == 1) : ?>
+                                                            <a href="tambah-data-peserta.php?edit=<?php echo $rowPeserta['id'] ?>" class="btn btn-success btn-sm">
+                                                                <span class="tf-icon bx bx-pencil bx-18px "></span>
+                                                            </a>
+                                                            <a onclick="return confirm('Apakah anda yakin akan menghapus data ini??')"
+                                                                href="data-peserta.php?delete=<?php echo $rowPeserta['id'] ?>" class="btn btn-danger btn-sm">
+                                                                <span class="tf-icon bx bx-trash bx-18px "></span>
+                                                            </a>
+                                                        <?php endif ?>
                                                     </td>
                                                 </tr>
                                             <?php } ?>

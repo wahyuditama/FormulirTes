@@ -12,11 +12,11 @@ if (isset($_POST['login'])) {
         $rowLogin = mysqli_fetch_assoc($queryLogin);
         if ($rowLogin['email'] == $email && $rowLogin['password'] == $password) {
             $_SESSION['id'] = $rowLogin['id'];
-            $_SESSION['level'] = $rowLogin['level'];
+            $_SESSION['level'] = $rowLogin['id_level'];
             $_SESSION['Email'] = $rowLogin['email'];
         }
 
-        header('location:../index.php?id=' . $rowLogin['id']);
+        header('location:index.php?id=' . $rowLogin['id']);
     }
 }
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2024 at 05:04 PM
+-- Generation Time: Nov 27, 2024 at 04:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -67,7 +67,8 @@ INSERT INTO `jurusan` (`id`, `nama_jurusan`, `status`, `create_at`, `update_at`)
 (5, 'Web programming', 0, '2024-11-18 07:23:30', '2024-11-18 07:23:30'),
 (6, 'Teknik  Komputer', 0, '2024-11-18 07:24:04', '2024-11-18 07:24:04'),
 (8, 'Desain Grafis', 0, '2024-11-23 06:03:05', '2024-11-23 06:03:05'),
-(10, 'Tata Boga', 0, '2024-11-23 06:03:37', '2024-11-23 06:03:37');
+(10, 'Tata Boga', 0, '2024-11-23 06:03:37', '2024-11-23 06:03:37'),
+(11, 'Tata Graha', 0, '2024-11-26 15:31:34', '2024-11-26 15:31:34');
 
 -- --------------------------------------------------------
 
@@ -109,6 +110,7 @@ CREATE TABLE `peserta_pelatihan` (
   `jenis_kelamin` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
   `kartu_keluarga` varchar(100) NOT NULL,
+  `status` tinyint(4) NOT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -117,10 +119,11 @@ CREATE TABLE `peserta_pelatihan` (
 -- Dumping data for table `peserta_pelatihan`
 --
 
-INSERT INTO `peserta_pelatihan` (`id`, `id_gelombang`, `id_jurusan`, `nama_lengkap`, `tempat_lahir`, `tanggal_lahir`, `gelombang`, `jurusan`, `jenis_kelamin`, `email`, `kartu_keluarga`, `create_at`, `update_at`) VALUES
-(17, 2, 8, 'raiden makoto', 'fdfg', '2024-11-23', 'Gelombang 2', 'Desain Grafis', 'Laki-Laki', 'firo@gmail.com', '1351572.jpeg', '2024-11-23 13:48:55', '2024-11-23 13:48:55'),
-(18, 3, 10, 'raiden ei', 'Narukami Island', '2024-12-06', '', '', 'Laki-Laki', 'baal@gmail.com', '1351117.jpeg', '2024-11-23 16:09:15', '2024-11-23 16:21:18'),
-(23, 3, 10, 'naganohara yoimia', 'Narukami Island', '2024-11-23', 'Gelombang 3', 'Tata Boga', 'Laki-Laki', 'naganohara@gmail.com', 'picture4.jpg', '2024-11-23 16:41:31', '2024-11-23 16:41:31');
+INSERT INTO `peserta_pelatihan` (`id`, `id_gelombang`, `id_jurusan`, `nama_lengkap`, `tempat_lahir`, `tanggal_lahir`, `gelombang`, `jurusan`, `jenis_kelamin`, `email`, `kartu_keluarga`, `status`, `create_at`, `update_at`) VALUES
+(17, 2, 8, 'raiden makoto', 'fdfg', '2024-11-23', 'Gelombang 2', 'Desain Grafis', 'Laki-Laki', 'firo@gmail.com', '1351572.jpeg', 0, '2024-11-23 13:48:55', '2024-11-23 13:48:55'),
+(18, 2, 11, 'raiden ei', 'Narukami Island', '2024-12-06', 'Gelombang 2', 'Tata Graha', 'Laki-Laki', 'baal@gmail.com', '1351117.jpeg', 0, '2024-11-23 16:09:15', '2024-11-27 03:15:06'),
+(33, 3, 10, 'naganohara yoimia', 'Narukami Island', '2024-11-25', 'Gelombang 3', 'Tata Boga', 'Laki-Laki', 'naganohara@gmail.com', '6746b625953ed.jpg', 0, '2024-11-26 15:45:38', '2024-11-27 14:35:51'),
+(35, 3, 8, 'yae miko', 'Mountain Yougo', '', 'Gelombang 3', 'Desain Grafis', 'Laki-Laki', 'yae@gmail.com', '1356760.jpeg', 1, '2024-11-27 03:21:34', '2024-11-27 14:08:13');
 
 -- --------------------------------------------------------
 
@@ -200,7 +203,7 @@ ALTER TABLE `gelombang_pelatihan`
 -- AUTO_INCREMENT for table `jurusan`
 --
 ALTER TABLE `jurusan`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `level`
@@ -212,7 +215,7 @@ ALTER TABLE `level`
 -- AUTO_INCREMENT for table `peserta_pelatihan`
 --
 ALTER TABLE `peserta_pelatihan`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `user`

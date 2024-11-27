@@ -1,5 +1,7 @@
 <?php
 include '../database/koneksi.php';
+session_start();
+
 
 if (isset($_POST['submit'])) {
     $id_gelombang = $_POST['gelombang'];
@@ -30,10 +32,13 @@ if (isset($_POST['submit'])) {
     header('location : data-peserta.php?tambah=berhasil');
 }
 
-$id = isset($_GET['edit']) ? $_GET['edit'] : '';
-$queryEdit = mysqli_query($koneksi, 'SELECT * FROM peserta_pelatihan ORDER BY id DESC');
-$rowEdit = mysqli_fetch_assoc($queryEdit);
 
+// Pastikan untuk memeriksa apakah parameter 'edit' ada
+$id = isset($_GET['edit']) ? $_GET['edit'] : '';
+
+// Query untuk mendapatkan data peserta yang akan diedit
+$queryEdit = mysqli_query($koneksi, "SELECT * FROM peserta_pelatihan WHERE id = '$id'");
+$rowEdit = mysqli_fetch_assoc($queryEdit);
 
 if (isset($_POST['edit'])) {
     $id_gelombang = $_POST['gelombang'];
@@ -44,44 +49,78 @@ if (isset($_POST['edit'])) {
     $jenis_kelamin = $_POST['jenis_kelamin'];
     $email = $_POST['email'];
 
-    //Ambil Data Gelombang 
-    $queryEditGelombang = mysqli_query($koneksi, "SELECT * FROM gelombang_pelatihan WHERE id = '$id_gelombang");
-    $rowGelombang = mysqli_fetch_assoc($queryEditGelombang);
-    $nama_gelombang = $rowGelombang['gelombang'];
-    // Ambil Data Jurusan
-    $queryEditJurusan = mysqli_query($koneksi, "SELECT * FROM jurusan WHERE id = '$id_jurusan");
-    $rowJurusan = mysqli_fetch_assoc($queryEditJurusan);
-    $nama_jurusan = $rowJurusan['jurusan'];
-    // update data peserta pelatihan di table Peserta Pelatihan
+
+    // Ambil nama gelombang dan jurusan
+    $queryGelombang = mysqli_query($koneksi, "SELECT * FROM gelombang_pelatihan WHERE id = '$id_gelombang'");
+    $rowGelombang = mysqli_fetch_assoc($queryGelombang);
+    // Validasi Jika ada error
+    if (!$rowGelombang || empty($rowGelombang['nama_gelombang'])) {
+        echo "<script>
+            alert('Data tidak boleh kosong');
+            window.history.back();
+        </script>";
+    }
+    $input_gelombang = $rowGelombang['nama_gelombang'];
+
+
+    $queryJurusan = mysqli_query($koneksi, "SELECT * FROM jurusan WHERE id = '$id_jurusan'");
+    $rowJurusan = mysqli_fetch_assoc($queryJurusan);
+    if (!$rowJurusan || !empty($rowJurusan['nama_jurusan'])) {
+        echo "<script>
+            alert('Data Harus Diisi');
+            window.history.back();
+        </script>";
+    }
+    $input_jurusan = $rowJurusan['nama_jurusan'];
+
+
+    $nama_kartu_keluarga = $rowEdit['kartu_keluarga'];
     if (!empty($_FILES['kartu_keluarga']['name'])) {
         $kartu = $_FILES['kartu_keluarga']['name'];
-        $sizeKartu = $_FILES['kartu_keluarga']['size'];
+        $ext = strtolower(pathinfo($kartu, PATHINFO_EXTENSION));
+        $allowed_ext = ['jpg', 'jpeg', 'png'];
 
-        $ext = array('PNG', 'JPEG', 'JPG');
-        $extKartu = pathinfo($kartu, PATHINFO_EXTENSION);
-
-        if (in_array($extKartu, $ext)) {
-            echo "extension tidak ditemukan";
-            die();
+        if (!in_array($ext, $allowed_ext)) {
+            $errors[] = "Ekstensi file tidak valid. Hanya JPG, JPEG, dan PNG yang diperbolehkan.";
         } else {
-            move_uploaded_file($_FILES['kartu_keluarga']['tmp_name'], '../upload' . $kartu);
-            $queryEdit = mysqli_query($koneksi, "UPDATE peserta_pelatihan SET 
-            nama_lengkap = '$nama_lengkap', 
-            id_gelombang = '$id_gelombang', 
-            id_jurusan = '$id_jurusan', 
-            gelombang = '$nama_gelombang', 
-            jurusan = '$nama_jurusan', 
-            tanggal_lahir = '$tanggal_lahir', 
-            tempat_lahir = '$tempat_lahir', 
-            jenis_kelamin = '$jenis_kelamin', 
-            email = '$email', 
-            kartu_keluarga = '$kartu' 
-            WHERE id = '$id'");
+            $upload_dir = '../upload/';
+            if (!file_exists($upload_dir)) {
+                mkdir($upload_dir, 0777, true);
+            }
+
+            $nama_kartu_keluarga = uniqid() . '.' . $ext;
+            $path_kartu = $upload_dir . $nama_kartu_keluarga;
+
+            if (!move_uploaded_file($_FILES['kartu_keluarga']['tmp_name'], $path_kartu)) {
+                $errors[] = "Gagal mengunggah file kartu keluarga.";
+            }
         }
     }
 
-    header('location: data-peserta.php?edit=berhasil');
+    // Jika tidak ada error, lakukan update
+    if (empty($errors)) {
+        $queryUpdate = "UPDATE peserta_pelatihan SET 
+            id_gelombang = '$id_gelombang', 
+            id_jurusan = '$id_jurusan', 
+            gelombang = '$input_gelombang', 
+            jurusan = '$input_jurusan', 
+            nama_lengkap = '$nama_lengkap', 
+            tempat_lahir = '$tempat_lahir', 
+            tanggal_lahir = '$tanggal_lahir', 
+            jenis_kelamin = '$jenis_kelamin', 
+            email = '$email', 
+            kartu_keluarga = '$nama_kartu_keluarga' 
+            WHERE id = '$id'";
+
+        if (mysqli_query($koneksi, $queryUpdate)) {
+            header('Location: data-peserta.php?edit=berhasil');
+            exit();
+        } else {
+            $errors[] = "Gagal memperbarui data: " . mysqli_error($koneksi);
+        }
+    }
 }
+
 
 
 // selecrt Gelombang
@@ -89,6 +128,8 @@ $queryGelombang = mysqli_query($koneksi, "SELECT * FROM gelombang_pelatihan ORDE
 
 // Select Jurusan
 $queryJurusan = mysqli_query($koneksi, "SELECT * FROM jurusan ORDER BY id DESC");
+
+
 ?>
 <!DOCTYPE html>
 
@@ -139,14 +180,14 @@ $queryJurusan = mysqli_query($koneksi, "SELECT * FROM jurusan ORDER BY id DESC")
                         <div class="row">
                             <div class="col-md-10 mx-auto">
                                 <div class="card">
-                                    <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : (isset($_GET['detail']) ? 'Detail' : 'Tambah'); ?> Data Peserta</div>
+                                    <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : (isset($_GET['detail']) ? 'detail' : 'tambah'); ?> Data Peserta</div>
                                     <div class="card-body">
                                         <form action="" method="post" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="">Gelombang Pelatihan</label>
-                                                        <?php if (isset($_GET['tambah']) || isset($_GET['edit'])) : ?>
+                                                        <?php if (!isset($_GET['tambah']) || isset($_GET['edit'])) : ?>
                                                             <select name="gelombang" id="gelombang" class="form-select form-label">
                                                                 <option value="">Pilih Gelombang Pelatihan</option>
                                                                 <?php while ($rowPelatihan = mysqli_fetch_assoc($queryGelombang)) { ?>
@@ -156,13 +197,13 @@ $queryJurusan = mysqli_query($koneksi, "SELECT * FROM jurusan ORDER BY id DESC")
                                                         <?php endif; ?>
                                                         <?php if (isset($_GET['detail'])) : ?>
                                                             <input type="text" class="form-control" value="<?php echo isset($_GET['detail']) ? $rowEdit['gelombang'] : '' ?>" readonly>
-                                                        <?php endif; ?>
+                                                        <?php endif ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="">jurusan Pelatihan</label>
-                                                        <?php if (isset($_GET['tambah']) || isset($_GET['edit'])) : ?>
+                                                        <?php if (!isset($_GET['tambah']) || isset($_GET['edit'])) : ?>
                                                             <select name="jurusan" id="jurusan" class="form-select form-label">
                                                                 <option value="">Pilih jurusan Pelatihan</option>
                                                                 <?php while ($rowJurusan = mysqli_fetch_assoc($queryJurusan)) { ?>
@@ -180,13 +221,13 @@ $queryJurusan = mysqli_query($koneksi, "SELECT * FROM jurusan ORDER BY id DESC")
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="">Masukan Nama Lengkap</label>
-                                                        <input type="text" name="nama_lengkap" class="form-control" value="<?php echo isset($_GET['edit']) ? $rowEdit['nama_lengkap'] : '' ?>" <?php echo isset($_GET['detail']) ? 'readonly' : ''; ?>>
+                                                        <input type="text" name="nama_lengkap" class="form-control" value="<?php echo isset($_GET['edit']) ? $rowEdit['nama_lengkap'] : '' ?>" placeholder=" <?php echo isset($_GET['detail']) ? $rowEdit['nama_lengkap'] : '' ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="">Tempat Lahir </label>
-                                                        <input type="text" name="tempat_lahir" class="form-control" value="<?php echo isset($_GET['edit']) ? $rowEdit['tempat_lahir'] : '' ?>">
+                                                        <input type="text" v name="tempat_lahir" class="form-control" value="<?php echo isset($_GET['edit']) ? $rowEdit['tempat_lahir'] : '' ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -202,7 +243,7 @@ $queryJurusan = mysqli_query($koneksi, "SELECT * FROM jurusan ORDER BY id DESC")
                                                         <label for="">jenis_kelamin Pelatihan</label>
                                                         <select name="jenis_kelamin" id="" class="form-control">
                                                             <option value="Laki-Laki">Laki-Laki</option>
-                                                            <option value="Laki-Laki">Perempuan</option>
+                                                            <option value="Perempuan">Perempuan</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -251,12 +292,6 @@ $queryJurusan = mysqli_query($koneksi, "SELECT * FROM jurusan ORDER BY id DESC")
     </div>
     <!-- / Layout wrapper -->
 
-    <div class="buy-now">
-        <a
-            href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
-            target="_blank"
-            class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-    </div>
 
     <?php include '../layout/js.php' ?>
 </body>
