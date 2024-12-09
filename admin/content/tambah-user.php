@@ -1,5 +1,6 @@
 <?php
 include '../database/koneksi.php';
+session_start();
 
 if (isset($_POST['tambah'])) {
     $id_level = $_POST['id_level'];

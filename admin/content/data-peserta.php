@@ -4,7 +4,19 @@ include '../database/koneksi.php';
 include '../layout/helper.php';
 session_start();
 
-$dataPeserta = mysqli_query($koneksi, "SELECT * FROM peserta_pelatihan ORDER BY id DESC");
+$dataPeserta = mysqli_query($koneksi, "SELECT 
+    gelombang_pelatihan.nama_gelombang,
+    jurusan.nama_jurusan, 
+    peserta_pelatihan.* 
+FROM 
+    peserta_pelatihan 
+LEFT JOIN 
+    gelombang_pelatihan ON peserta_pelatihan.id_gelombang = gelombang_pelatihan.id
+LEFT JOIN 
+    jurusan ON peserta_pelatihan.id_jurusan = jurusan.id
+ORDER BY 
+    peserta_pelatihan.id DESC
+");
 
 // Parameter untuk ubah status
 $id = isset($_GET['id']) ? $_GET['id'] : '';
@@ -92,8 +104,8 @@ if (isset($_GET['delete'])) {
                                             while ($rowPeserta = mysqli_fetch_assoc($dataPeserta)) { ?>
                                                 <tr>
                                                     <td><?php echo $no++ ?></td>
-                                                    <td><?php echo $rowPeserta['gelombang'] ?></td>
-                                                    <td><?php echo $rowPeserta['jurusan'] ?></td>
+                                                    <td><?php echo $rowPeserta['nama_gelombang'] ?></td>
+                                                    <td><?php echo $rowPeserta['nama_jurusan'] ?></td>
                                                     <td><?php echo $rowPeserta['nama_lengkap'] ?></td>
                                                     <td><?php echo $rowPeserta['email'] ?></td>
                                                     <td>

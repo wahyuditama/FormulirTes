@@ -141,7 +141,7 @@
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="tambah-data-peserta.php" class="menu-link">
+                            <a href="tambah-data-peserta.php?tambah" class="menu-link">
                                 <div data-i18n="Notifications">Tambah Data Peserta</div>
                             </a>
                         </li>
