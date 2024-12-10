@@ -33,7 +33,8 @@
                         <i class="menu-icon tf-icons bx bx-dock-top"></i>
                         <div data-i18n="Account Settings">Master Data</div>
                     </a>
-                    <ul class="menu-sub">
+                    <!-- menu-sub untuk Dropdowns -->
+                    <ul class="">
                         <li class="menu-item">
                             <a href="data-pengguna.php" class="menu-link">
                                 <div data-i18n="Account">Data Pengguna</div>
@@ -81,14 +82,14 @@
             <!-- <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li> -->
             <!-- Cards -->
 
-            <?php if ($_SESSION['level'] == 2 || $_SESSION['level'] == 1): ?>
+            <?php if ($_SESSION['level'] == 2): ?>
                 <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">Admin APK</span>
                 </li>
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                        <div data-i18n="Account Settings">Data Peserta</div>
+                        <div data-i18n="Account Settings">Data Peserta Pelatihan</div>
                     </a>
                     <ul class="">
 
@@ -105,14 +106,14 @@
                     </ul>
                 </li>
             <?php endif ?>
-            <?php if ($_SESSION['level'] == 3 || $_SESSION['level'] == 1): ?>
+            <?php if ($_SESSION['level'] == 3): ?>
                 <li class="menu-header small text-uppercase">
                     <span class="menu-header-text">PIC Jurusan</span>
                 </li>
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                        <div data-i18n="Account Settings">Data Peserta</div>
+                        <div data-i18n="Account Settings">Data Peserta Pelatihan</div>
                     </a>
                     <ul class="">
                         <li class="menu-item">
@@ -237,10 +238,10 @@
 
 
             <li class="menu-item">
-                <a href="icons-boxicons.html" class="menu-link">
+                <!-- <a href="icons-boxicons.html" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-crown"></i>
                     <div data-i18n="Boxicons">Boxicons</div>
-                </a>
+                </a> -->
             </li>
 
             <!-- Forms & Tables -->

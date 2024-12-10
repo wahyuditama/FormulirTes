@@ -15,19 +15,23 @@ if (isset($_POST['submit'])) {
         $sizeKartu = $_FILES['kartu_keluarga']['size'];
 
         $ext = array('PNG', 'JPEG', 'JPG');
-        $extKartu = pathinfo($kartu, PATHINFO_EXTENSION);
+        $extKartu = strtoupper(pathinfo($kartu, PATHINFO_EXTENSION));
 
-        if (in_array($extKartu, $ext)) {
-            echo "extension tidak ditemukan";
+        if (!in_array(strtoupper($extKartu), $ext)) {
+            echo "Extension tidak valid";
             die();
         } else {
             move_uploaded_file($_FILES['kartu_keluarga']['tmp_name'], 'admin/upload/' . $kartu);
-            $queryPelatihan = mysqli_query($koneksi, " INSERT INTO peserta_pelatihan (nama_lengkap, id_gelombang, id_jurusan, gelombang, jurusan,tanggal_lahir,tempat_lahir, jenis_kelamin, email,kartu_keluarga) SELECT '$nama_lengkap', '$id_gelombang','$id_jurusan', gelombang_pelatihan.nama_gelombang, jurusan.nama_jurusan,'$tanggal_lahir','$tempat_lahir','$jenis_kelamin','$email','$kartu' FROM gelombang_pelatihan JOIN jurusan ON gelombang_pelatihan.id = '$id_gelombang' AND jurusan.id = '$id_jurusan'");
+            $queryPelatihan = mysqli_query($koneksi, "INSERT INTO peserta_pelatihan (id_gelombang, id_jurusan, nama_lengkap, tanggal_lahir,tempat_lahir, jenis_kelamin, email,kartu_keluarga) VALUES ('$id_gelombang','$id_jurusan','$nama_lengkap','$tempat_lahir','$tanggal_lahir','$jenis_kelamin','$email','$kartu')");
         }
     } else {
-        $queryPelatihan = mysqli_query($koneksi, " INSERT INTO peserta_pelatihan (nama_lengkap, id_gelombang, id_jurusan, gelombang, jurusan,tanggal_lahir,tempat_lahir, jenis_kelamin, email) SELECT '$nama_lengkap','$tanggal_lahir','$tempat_lahir','$jenis_kelamin','$email', gelombang_pelatihan.id, jurusan.id, gelombang_pelatihan.nama_gelombang,jurusan.nama_jurusan FROM gelombang_pelatihan JOIN jurusan ON gelombang_pelatihan.id = '$id_gelombang' AND jurusan.id = '$id_jurusan'");
+        $queryPelatihan = mysqli_query($koneksi, "INSERT INTO peserta_pelatihan (id_gelombang, id_jurusan, nama_lengkap, tanggal_lahir,tempat_lahir, jenis_kelamin, email) VALUES ('$id_gelombang','$id_jurusan','$nama_lengkap','$tempat_lahir','$tanggal_lahir','$jenis_kelamin','$email')");
     }
-    echo "Data berhasil masuk";
+
+    echo "<script>
+    alert('Data berhasil masuk');
+    window.location.href='index.php';
+    </script>";
 }
 
 // selecrt Gelombang
