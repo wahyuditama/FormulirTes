@@ -80,70 +80,83 @@ if (isset($_GET['delete'])) {
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <!-- / Content -->
                         <div class="row">
-                            <div class="col-md-12 mx-auto">
-                                <div>
-                                    <a href="tambah-data-peserta.php?tambah" class="btn btn-outline-primary">Tambah</a>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered">
-                                        <thead class="text-center">
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>Gelombang Pelatihan</th>
-                                                <th>Jurusan</th>
-                                                <th>Nama Peserta</th>
-                                                <th>Email</th>
-                                                <th>Foto Kartu Keluarga</th>
-                                                <th>Status</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $no = 1;
-                                            while ($rowPeserta = mysqli_fetch_assoc($dataPeserta)) { ?>
-                                                <tr>
-                                                    <td><?php echo $no++ ?></td>
-                                                    <td><?php echo $rowPeserta['nama_gelombang'] ?></td>
-                                                    <td><?php echo $rowPeserta['nama_jurusan'] ?></td>
-                                                    <td><?php echo $rowPeserta['nama_lengkap'] ?></td>
-                                                    <td><?php echo $rowPeserta['email'] ?></td>
-                                                    <td>
-                                                        <img src="../upload/<?php echo $rowPeserta['kartu_keluarga'] ?>" class="img-fluid" width="100" alt="">
-                                                    </td>
-                                                    <td>
-                                                        <?php
-                                                        switch ($rowPeserta['status']) {
-                                                            case '1':
-                                                                $badge = "<a href='data-peserta.php?id=" . $rowPeserta['id'] . "&status=0' class='btn btn-success btn-sm'>Lulus</a>";
-                                                                break;
-                                                            default:
-                                                                $badge = "<a href='data-peserta.php?id=" . $rowPeserta['id'] . "&status=1' class='btn btn-danger btn-sm'>Belum Lulus</a>";
-                                                                break;
-                                                        }
-                                                        echo $badge;
-                                                        ?>
-                                                    </td>
-                                                    <td>
-                                                        <?php if ($_SESSION['level'] == 2) : ?>
-                                                            <a href="tambah-data-peserta.php?detail=<?php echo $rowPeserta['id'] ?>" class="btn btn-primary btn-sm">
-                                                                <span class="tf-icon bx bx-show bx-18px "></span>
-                                                            </a>
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <?php if ($_SESSION['level'] == 1) : ?>
+                                            <a href="tambah-data-peserta.php?tambah" class="btn btn-outline-primary mb-3">Tambah</a>
+                                        <?php endif ?>
+                                        <?php if ($_SESSION['level'] == 2) : ?>
+                                            <h3>Data Peserta Pelatihan</h3>
+                                        <?php endif ?>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead class="text-center">
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Gelombang Pelatihan</th>
+                                                        <th>Jurusan</th>
+                                                        <th>Nama Peserta</th>
+                                                        <th>Email</th>
+                                                        <!-- <th>Foto Kartu Keluarga</th> -->
+                                                        <?php if ($_SESSION['level'] == 1 || $_SESSION['level'] == 2) : ?>
+                                                            <th>Status</th>
                                                         <?php endif ?>
-                                                        <?php if ($_SESSION['level'] == 1) : ?>
-                                                            <a href="tambah-data-peserta.php?edit=<?php echo $rowPeserta['id'] ?>" class="btn btn-success btn-sm">
-                                                                <span class="tf-icon bx bx-pencil bx-18px "></span>
-                                                            </a>
-                                                            <a onclick="return confirm('Apakah anda yakin akan menghapus data ini??')"
-                                                                href="data-peserta.php?delete=<?php echo $rowPeserta['id'] ?>" class="btn btn-danger btn-sm">
-                                                                <span class="tf-icon bx bx-trash bx-18px "></span>
-                                                            </a>
-                                                        <?php endif ?>
-                                                    </td>
-                                                </tr>
-                                            <?php } ?>
-                                        </tbody>
-                                    </table>
+                                                        <th>Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $no = 1;
+                                                    while ($rowPeserta = mysqli_fetch_assoc($dataPeserta)) { ?>
+                                                        <tr>
+                                                            <td><?php echo $no++ ?></td>
+                                                            <td><?php echo $rowPeserta['nama_gelombang'] ?></td>
+                                                            <td><?php echo $rowPeserta['nama_jurusan'] ?></td>
+                                                            <td><?php echo $rowPeserta['nama_lengkap'] ?></td>
+                                                            <td><?php echo $rowPeserta['email'] ?></td>
+                                                            <!-- <td>
+                                                                <img src="../upload/<?php echo $rowPeserta['kartu_keluarga'] ?>" class="img-fluid" width="100" alt="">
+                                                            </td> -->
+                                                            <?php if ($_SESSION['level'] == 1 ||  $_SESSION['level'] == 2) : ?>
+                                                                <td>
+                                                                    <?php
+                                                                    switch ($rowPeserta['status']) {
+                                                                        case '1':
+                                                                            $badge = "<a href='data-peserta.php?id=" . $rowPeserta['id'] . "&status=0' class='btn btn-success btn-sm'>Lulus</a>";
+                                                                            break;
+                                                                        default:
+                                                                            $badge = "<a href='data-peserta.php?id=" . $rowPeserta['id'] . "&status=1' class='btn btn-danger btn-sm'>Belum Lulus</a>";
+                                                                            break;
+                                                                    }
+                                                                    echo $badge;
+                                                                    ?>
+                                                                </td>
+                                                            <?php endif ?>
+                                                            <td>
+                                                                <?php if ($_SESSION['level'] == 2 || $_SESSION['level'] == 3) : ?>
+                                                                    <a href="tambah-data-peserta.php?detail=<?php echo $rowPeserta['id'] ?>" class="btn btn-primary btn-sm">
+                                                                        <span class="tf-icon bx bx-show bx-18px "></span>
+                                                                    </a>
+                                                                <?php endif ?>
+                                                                <?php if ($_SESSION['level'] == 1) : ?>
+                                                                    <a href="tambah-data-peserta.php?edit=<?php echo $rowPeserta['id'] ?>" class="btn btn-success btn-sm">
+                                                                        <span class="tf-icon bx bx-pencil bx-18px "></span>
+                                                                    </a>
+                                                                    <a onclick="return confirm('Apakah anda yakin akan menghapus data ini??')"
+                                                                        href="data-peserta.php?delete=<?php echo $rowPeserta['id'] ?>" class="btn btn-danger btn-sm">
+                                                                        <span class="tf-icon bx bx-trash bx-18px "></span>
+                                                                    </a>
+                                                                <?php endif ?>
+                                                            </td>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -168,12 +181,12 @@ if (isset($_GET['delete'])) {
     </div>
     <!-- / Layout wrapper -->
 
-    <div class="buy-now">
+    <!-- <div class="buy-now">
         <a
             href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
             target="_blank"
             class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-    </div>
+    </div> -->
 
     <?php include '../layout/js.php' ?>
 </body>

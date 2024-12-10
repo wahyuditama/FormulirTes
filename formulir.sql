@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2024 at 04:06 PM
+-- Generation Time: Dec 10, 2024 at 09:04 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -63,12 +63,12 @@ CREATE TABLE `jurusan` (
 --
 
 INSERT INTO `jurusan` (`id`, `nama_jurusan`, `status`, `create_at`, `update_at`) VALUES
-(4, 'Teknik Jaringan & Komputer', 0, '2024-11-18 07:23:08', '2024-11-18 07:23:08'),
-(5, 'Web programming', 0, '2024-11-18 07:23:30', '2024-11-18 07:23:30'),
-(6, 'Teknik  Komputer', 0, '2024-11-18 07:24:04', '2024-11-18 07:24:04'),
-(8, 'Desain Grafis', 0, '2024-11-23 06:03:05', '2024-11-23 06:03:05'),
-(10, 'Tata Boga', 0, '2024-11-23 06:03:37', '2024-11-23 06:03:37'),
-(11, 'Tata Graha', 0, '2024-11-26 15:31:34', '2024-11-26 15:31:34');
+(1, 'Teknik Jaringan & Komputer', 0, '2024-11-18 07:23:08', '2024-12-09 16:13:42'),
+(2, 'Web programming', 0, '2024-11-18 07:23:30', '2024-12-09 16:13:47'),
+(3, 'Teknik  Komputer', 0, '2024-11-18 07:24:04', '2024-12-09 16:13:56'),
+(4, 'Desain Grafis', 0, '2024-11-23 06:03:05', '2024-12-09 16:14:04'),
+(5, 'Tata Boga', 0, '2024-11-23 06:03:37', '2024-12-09 16:14:08'),
+(6, 'Tata Graha', 0, '2024-11-26 15:31:34', '2024-12-09 18:47:42');
 
 -- --------------------------------------------------------
 
@@ -105,8 +105,6 @@ CREATE TABLE `peserta_pelatihan` (
   `nama_lengkap` varchar(255) NOT NULL,
   `tempat_lahir` varchar(50) NOT NULL,
   `tanggal_lahir` varchar(50) NOT NULL,
-  `gelombang` varchar(100) NOT NULL,
-  `jurusan` varchar(50) NOT NULL,
   `jenis_kelamin` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
   `kartu_keluarga` varchar(100) NOT NULL,
@@ -119,11 +117,12 @@ CREATE TABLE `peserta_pelatihan` (
 -- Dumping data for table `peserta_pelatihan`
 --
 
-INSERT INTO `peserta_pelatihan` (`id`, `id_gelombang`, `id_jurusan`, `nama_lengkap`, `tempat_lahir`, `tanggal_lahir`, `gelombang`, `jurusan`, `jenis_kelamin`, `email`, `kartu_keluarga`, `status`, `create_at`, `update_at`) VALUES
-(17, 2, 8, 'raiden makoto', 'fdfg', '2024-11-23', 'Gelombang 2', 'Desain Grafis', 'Laki-Laki', 'firo@gmail.com', '1351572.jpeg', 0, '2024-11-23 13:48:55', '2024-11-23 13:48:55'),
-(18, 2, 11, 'raiden ei', 'Narukami Island', '2024-12-06', 'Gelombang 2', 'Tata Graha', 'Laki-Laki', 'baal@gmail.com', '1351117.jpeg', 0, '2024-11-23 16:09:15', '2024-11-27 03:15:06'),
-(33, 3, 10, 'naganohara yoimia', 'Narukami Island', '2024-11-25', 'Gelombang 3', 'Tata Boga', 'Laki-Laki', 'naganohara@gmail.com', '6746b625953ed.jpg', 0, '2024-11-26 15:45:38', '2024-11-27 14:35:51'),
-(35, 3, 8, 'yae miko', 'Mountain Yougo', '', 'Gelombang 3', 'Desain Grafis', 'Laki-Laki', 'yae@gmail.com', '1356760.jpeg', 1, '2024-11-27 03:21:34', '2024-11-27 14:08:13');
+INSERT INTO `peserta_pelatihan` (`id`, `id_gelombang`, `id_jurusan`, `nama_lengkap`, `tempat_lahir`, `tanggal_lahir`, `jenis_kelamin`, `email`, `kartu_keluarga`, `status`, `create_at`, `update_at`) VALUES
+(18, 2, 6, 'raiden ei', 'Narukami Island', '2024-12-06', 'Perempuan', 'baal@gmail.com', '1351117.jpeg', 0, '2024-11-23 16:09:15', '2024-12-09 07:34:47'),
+(33, 1, 5, 'naganohara yoimia', 'Narukami Island', '2024-11-25', 'Laki-Laki', 'naganohara@gmail.com', '6746b625953ed.jpg', 1, '2024-11-26 15:45:38', '2024-12-09 18:18:24'),
+(35, 3, 6, 'yae miko', 'Mountain Yougo', '2024-12-18', 'Perempuan', 'yae@gmail.com', '1356760.jpeg', 1, '2024-11-27 03:21:34', '2024-12-09 06:38:28'),
+(38, 3, 6, 'Indra Pamungkas', 'Bekasi', '2024-12-03', 'Laki-Laki', 'indra@123', '7.png', 0, '2024-12-09 09:13:49', '2024-12-09 09:13:49'),
+(40, 2, 1, 'ibnu ibrahim123', 'Bekasi', '2024-12-24', 'Laki-Laki', 'ibnu@123', '6757309b6810b.png', 1, '2024-12-09 16:08:24', '2024-12-10 08:00:31');
 
 -- --------------------------------------------------------
 
@@ -134,7 +133,6 @@ INSERT INTO `peserta_pelatihan` (`id`, `id_gelombang`, `id_jurusan`, `nama_lengk
 CREATE TABLE `user` (
   `id` int(12) NOT NULL,
   `id_level` int(12) NOT NULL,
-  `nama_level` varchar(100) NOT NULL,
   `nama_lengkap` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
@@ -146,11 +144,11 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `id_level`, `nama_level`, `nama_lengkap`, `email`, `password`, `create_at`, `update_at`) VALUES
-(4, 1, 'admin', 'admin', 'admin@gmail.com', '123', '2024-11-23 10:07:03', '2024-11-23 10:07:03'),
-(5, 3, 'PIC Jurusan', 'naganohara yoimia', 'naganohara@gmail.com', '123', '2024-11-23 10:16:47', '2024-11-23 10:16:47'),
-(6, 2, 'adminAPK', 'adminAPK', 'adminAPK@gmail.com', '123', '2024-11-23 10:17:48', '2024-11-23 12:46:08'),
-(8, 2, 'adminAPK', 'ibnu ibrahim', 'firo@wulo.com', '123', '2024-11-23 17:09:46', '2024-11-23 17:16:14');
+INSERT INTO `user` (`id`, `id_level`, `nama_lengkap`, `email`, `password`, `create_at`, `update_at`) VALUES
+(4, 1, 'admin', 'admin@gmail.com', '123', '2024-11-23 10:07:03', '2024-11-23 10:07:03'),
+(5, 3, 'naganohara yoimia', 'PICJurusan@gmail.com', '123', '2024-11-23 10:16:47', '2024-12-10 06:21:19'),
+(6, 2, 'Ahmad Jolani Assad', 'adminAPK@gmail.com', '123', '2024-11-23 10:17:48', '2024-12-10 04:38:42'),
+(27, 3, 'budi aryanto123', 'aryanto@gmail.com', '123', '2024-12-10 04:20:33', '2024-12-10 04:25:07');
 
 --
 -- Indexes for dumped tables
@@ -187,7 +185,7 @@ ALTER TABLE `peserta_pelatihan`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_level` (`id_level`);
+  ADD KEY `user_ibfk_1` (`id_level`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -215,13 +213,13 @@ ALTER TABLE `level`
 -- AUTO_INCREMENT for table `peserta_pelatihan`
 --
 ALTER TABLE `peserta_pelatihan`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Constraints for dumped tables
@@ -231,13 +229,14 @@ ALTER TABLE `user`
 -- Constraints for table `peserta_pelatihan`
 --
 ALTER TABLE `peserta_pelatihan`
-  ADD CONSTRAINT `peserta_pelatihan_ibfk_1` FOREIGN KEY (`id_jurusan`) REFERENCES `jurusan` (`id`);
+  ADD CONSTRAINT `peserta_pelatihan_ibfk_1` FOREIGN KEY (`id_jurusan`) REFERENCES `jurusan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `peserta_pelatihan_ibfk_2` FOREIGN KEY (`id_gelombang`) REFERENCES `gelombang_pelatihan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_level`) REFERENCES `level` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_level`) REFERENCES `level` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

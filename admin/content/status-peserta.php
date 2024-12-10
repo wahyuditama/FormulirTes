@@ -1,24 +1,15 @@
 <?php
 
 include '../database/koneksi.php';
+include '../layout/helper.php';
 session_start();
 
-$dataPengguna = mysqli_query($koneksi, "SELECT level.nama_level, user.* 
-FROM 
-    user
-LEFT JOIN 
-    level 
-ON user.id_level = level.id
-    ORDER BY user.id DESC");
-
-// Parameter untuk ubah status
-$idUser = isset($_GET['id']) ? $_GET['id'] : '';
-
+$selectStatusPeserta = mysqli_query($koneksi, "SELECT gelombang_pelatihan.nama_gelombang, peserta_pelatihan.* FROM peserta_pelatihan LEFT JOIN gelombang_pelatihan ON peserta_pelatihan.id_gelombang = gelombang_pelatihan.id ORDER BY id DESC");
 
 // untuk mendelete data
 if (isset($_GET['delete'])) {
-    $idUser = $_GET['delete'];
-    $delete = mysqli_query($koneksi, "DELETE FROM user WHERE id='$idUser'");
+    $id = $_GET['delete'];
+    $delete = mysqli_query($koneksi, "DELETE FROM user WHERE id='$id'");
 }
 
 ?>
@@ -69,40 +60,34 @@ if (isset($_GET['delete'])) {
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <!-- / Content -->
                         <div class="row">
-                            <div class="col-md-12 mx-auto">
+                            <div class="col-md-10 mx-auto">
                                 <div class="card">
+                                    <div class="card-header">
+                                        <a href="" class="btn btn-success">Data Status Peserta</a>
+                                    </div>
                                     <div class="card-body">
-                                        <div>
-                                            <a href="tambah-user.php?tambah" class="btn btn-outline-primary mb-3">Tambah</a>
-                                        </div>
                                         <div class="table-responsive">
                                             <table class="table table-bordered">
                                                 <thead class="text-center">
                                                     <tr>
                                                         <th>No.</th>
-                                                        <th>Nama Level</th>
+                                                        <th>Gelombang Peserta</th>
                                                         <th>Nama Peserta</th>
-                                                        <th>Email</th>
-                                                        <th>Aksi</th>
+                                                        <th>Email Peserta</th>
+                                                        <th>Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <?php
                                                     $no = 1;
-                                                    while ($rowUser = mysqli_fetch_assoc($dataPengguna)) { ?>
+                                                    while ($rowStatusPeserta = mysqli_fetch_assoc($selectStatusPeserta)) { ?>
                                                         <tr>
                                                             <td><?php echo $no++ ?></td>
-                                                            <td><?php echo $rowUser['nama_level'] ?></td>
-                                                            <td><?php echo $rowUser['nama_lengkap'] ?></td>
-                                                            <td><?php echo $rowUser['email'] ?></td>
+                                                            <td><?php echo $rowStatusPeserta['nama_gelombang'] ?></td>
+                                                            <td><?php echo $rowStatusPeserta['nama_lengkap'] ?></td>
+                                                            <td><?php echo $rowStatusPeserta['email'] ?></td>
                                                             <td>
-                                                                <a href="tambah-user.php?edit=<?php echo $rowUser['id'] ?>" class="btn btn-success btn-sm">
-                                                                    <span class="tf-icon bx bx-pencil bx-18px "></span>
-                                                                </a>
-                                                                <a onclick="return confirm('Apakah anda yakin akan menghapus data ini??')"
-                                                                    href="data-pengguna.php?delete=<?php echo $rowUser['id'] ?>" class="btn btn-danger btn-sm">
-                                                                    <span class="tf-icon bx bx-trash bx-18px "></span>
-                                                                </a>
+                                                                <?php echo StatusWawancara($rowStatusPeserta['status'])  ?>
                                                             </td>
                                                         </tr>
                                                     <?php } ?>

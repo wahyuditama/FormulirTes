@@ -264,6 +264,8 @@ $queryJurusan = mysqli_query($koneksi, "SELECT * FROM jurusan ORDER BY id DESC")
                                                         <?php if (isset($_GET['tambah']) || isset($_GET['edit'])) : ?>
                                                             <label for="">jenis_kelamin Peserta Pelatihan</label>
                                                             <select name="jenis_kelamin" id="" class="form-control">
+                                                                <option value="">--Pilih Jenis Kelamin--
+                                                                </option>
                                                                 <option value="Laki-Laki">Laki-Laki</option>
                                                                 <option value="Perempuan">Perempuan</option>
                                                             </select>
@@ -302,7 +304,9 @@ $queryJurusan = mysqli_query($koneksi, "SELECT * FROM jurusan ORDER BY id DESC")
                                                         <?php endif; ?>
                                                     </div>
                                                 </div>
-                                                <button type="submit" class="btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'submit' ?>"><?php echo  isset($_GET['edit']) ? 'Edit' : 'Submit' ?></button>
+                                                <?php if (isset($_GET['tambah']) || isset($_GET['edit'])) : ?>
+                                                    <button type="submit" class="btn-primary" name="<?php echo isset($_GET['edit']) ? 'edit' : 'submit' ?>"><?php echo  isset($_GET['edit']) ? 'Edit' : 'Submit' ?></button>
+                                                <?php endif ?>
                                             </div>
                                         </form>
                                     </div>

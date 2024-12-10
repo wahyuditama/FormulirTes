@@ -1,6 +1,7 @@
 <?php
 
 include '../database/koneksi.php';
+session_start();
 
 $selectGelombang = mysqli_query($koneksi, "SELECT * FROM gelombang_pelatihan ORDER BY id DESC");
 
@@ -116,12 +117,12 @@ if (isset($_GET['delete'])) {
     </div>
     <!-- / Layout wrapper -->
 
-    <div class="buy-now">
+    <!-- <div class="buy-now">
         <a
             href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
             target="_blank"
             class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-    </div>
+    </div> -->
 
     <?php include '../layout/js.php' ?>
 </body>

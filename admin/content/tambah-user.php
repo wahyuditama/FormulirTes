@@ -2,20 +2,22 @@
 include '../database/koneksi.php';
 session_start();
 
+// Select Data dari Table Level
+$queryLevel = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
+
 if (isset($_POST['tambah'])) {
     $id_level = $_POST['id_level'];
     $nama_lengkap = $_POST['nama_lengkap'];
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $sql = mysqli_query($koneksi, "INSERT INTO user (id_level,nama_level, nama_lengkap, email, password) SELECT id, nama_level, '$nama_lengkap', '$email', '$password' FROM level WHERE id = '$id_level'");
+    $sql = mysqli_query($koneksi, "INSERT INTO user (id_level, nama_lengkap, email, password) VALUES ('$id_level','$nama_lengkap','$email','$password')");
 
-    // echo "Data berhasil masuk";
-    header('location: user.php?tambah=berhasil');
+    header('location: data-pengguna.php?tambah=berhasil');
 }
 
 $id = isset($_GET['edit']) ? $_GET['edit'] : '';
-$queryEdit = mysqli_query($koneksi, 'SELECT * FROM user ORDER BY id DESC');
+$queryEdit = mysqli_query($koneksi, "SELECT * FROM user WHERE id ='$id'");
 $rowEdit = mysqli_fetch_assoc($queryEdit);
 
 if (isset($_POST['edit'])) {
@@ -25,17 +27,18 @@ if (isset($_POST['edit'])) {
     $password = $_POST['password'];
 
     // ambil nama level dari table level
-    $sqlLevel = mysqli_query($koneksi, "SELECT * FROM level WHERE id= '$id_level'");
-    $result = mysqli_fetch_array($sqlLevel);
-    $nama_level = $result['nama_level'];
+    // $sqlLevel = mysqli_query($koneksi, "SELECT * FROM level WHERE id= '$id_level'");
+    // $result = mysqli_fetch_array($sqlLevel);
+    // $nama_level = $result['nama_level'];
 
     // update data pengguna di table user
-    $update = mysqli_query($koneksi, "UPDATE user SET nama_level='$nama_level',id_level='$id_level', nama_lengkap='$nama_lengkap', email='$email', password='$password' WHERE id='$id'");
+    $update = mysqli_query($koneksi, "UPDATE user SET id_level='$id_level', nama_lengkap='$nama_lengkap', email='$email', password='$password' WHERE id='$id'");
 
-    header('location: user.php?edit=berhasil');
+    // print_r($update);
+    // die();
+    header('location: data-pengguna.php?edit=berhasil');
 }
-// Select Data dari Table Level
-$queryLevel = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
+
 
 
 ?>
@@ -88,18 +91,21 @@ $queryLevel = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
                         <div class="row">
                             <div class="col-md-8 mx-auto">
                                 <div class="card">
-                                    <div class="card-header"><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> user</div>
+                                    <div class="card-header d-flex justify-content-between">
+                                        <h4><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> user</h4>
+                                        <a href="" class="btn btn-secondary" onclick="window.history.back();return false;"><i class='bx bx-left-arrow-alt'></i></a>
+                                    </div>
                                     <div class="card-body">
                                         <form action="" method="post">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for=""><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> Level user</label>
-                                                        <select name="id_level" id="" class="form-control">
-                                                            <option value="">--Pilih Level---</option>
-                                                            <?php
-                                                            while ($rowLevel = mysqli_fetch_assoc($queryLevel)) { ?>
-                                                                <option value="<?php echo $rowLevel['id'] ?>"><?php echo  $rowLevel['nama_level'] ?></option>
+                                                        <select data-mdb-select-init name="id_level" class="form-control">
+                                                            <option value="">Pilih Level</option>
+                                                            <?php while ($rowLevel = mysqli_fetch_assoc($queryLevel)) { ?>
+                                                                <option <?php echo isset($rowEdit['id_level']) ? ($rowLevel['id'] == $rowEdit['id_level']) ? 'selected' : '' : '' ?>
+                                                                    value="<?php echo $rowLevel['id'] ?>"><?php echo $rowLevel['nama_level'] ?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
@@ -114,7 +120,7 @@ $queryLevel = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for=""><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?>Email user</label>
+                                                        <label for=""><?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah' ?> Email user</label>
                                                         <input type="email" name="email" class="form-control" value="<?php echo isset($_GET['edit']) ? $rowEdit['email'] : '' ?>">
                                                     </div>
                                                 </div>
@@ -152,12 +158,12 @@ $queryLevel = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
     </div>
     <!-- / Layout wrapper -->
 
-    <div class="buy-now">
+    <!-- <div class="buy-now">
         <a
             href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
             target="_blank"
             class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-    </div>
+    </div> -->
 
     <?php include '../layout/js.php' ?>
 </body>
